@@ -1,0 +1,27 @@
+﻿@page "/artists"
+@using ScreenSound.WASM.Components
+@inject ArtistClient Client
+
+<h1>Artists</h1>
+
+@if (_artists is not null)
+{
+    <MudGrid>
+        @foreach (var artist in _artists)
+        {
+            <MudItem xs="3">
+                <CardArtist Artist="artist"></CardArtist>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code
+{
+    private IEnumerable<ArtistResponse>? _artists;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _artists = await Client.GetArtistsAsync();
+    }
+}
