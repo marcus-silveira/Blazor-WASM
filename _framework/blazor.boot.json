@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "ScreenSound.WASM",
   "resources": {
-    "hash": "sha256-ywm4j0Tw7ZUcgyCw5o/MvMjt9ZPiH6GFhtq1mJycRtA=",
+    "hash": "sha256-9fIuiwOAxxIr3+JBsIw0K3XE/pWscOjNixDUaDf063c=",
     "jsModuleNative": {
       "dotnet.native.8.0.6.suuomc2hr0.js": "sha256-YU6M9+jtDVnB8/wtrgIndOstzNh778Ls8g9XnbjorSk="
     },
@@ -78,7 +78,7 @@
       "NuGet.ProjectModel.wasm": "sha256-ki/pxRmJ/ZAZdj6DocG1vPrxhfbSMdzIwNVbWTcFVaw=",
       "NuGet.Protocol.wasm": "sha256-DD7Xol7KWEVxY/OXMLpT39acrtmQcSb1OxcYJ4dw+2U=",
       "NuGet.Versioning.wasm": "sha256-PEdvFa0thJPE+H2XiNhpyX02tdXElaSU/MQCp7pPblY=",
-      "ScreenSound.WASM.wasm": "sha256-L5Vh9mmj1zgAXsRuB21xirEKdmMTgtNbwZWRzrfXeYY=",
+      "ScreenSound.WASM.wasm": "sha256-MBNnBOAsOKtVxPnOgvmNSBFTHegRBLhqvQapHS6QEmM=",
       "System.CodeDom.wasm": "sha256-JTNE3tzQPJ/PsvxuSm7S2htCM6rjNrMn1Aseg9MoIu8=",
       "System.Collections.Concurrent.wasm": "sha256-BRUUdKZ+ciUZGGgslCHY8eswj/UlkT2apktLYQjbeYE=",
       "System.Collections.Immutable.wasm": "sha256-Ey7TUkEvkCx0U4kS1Rxq03fv0iqHf0Y9tpydB0NYNOw=",
