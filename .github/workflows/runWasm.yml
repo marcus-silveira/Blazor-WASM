@@ -1,0 +1,31 @@
+name: Deploy Blazor WASM to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Altere para o branch que deseja monitorar
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'  # Certifique-se de usar a versão correta
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet publish -c Release -o release
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./release/wwwroot
