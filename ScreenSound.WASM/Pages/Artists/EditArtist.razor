@@ -1,17 +1,14 @@
-﻿@page "/artists/register"
+﻿@page "/artists/edit/{Id:int}"
 @inject ArtistClient ArtistClient
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
-<h3>
-    Register an artist
-</h3>
-
 <MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
     <MudText Class="mt-8" Typo="Typo.h4">
-        Artist registration
+        @* Update Artist @Artist.Name details *@
+        Update Artist *Name* details
     </MudText>
-    
+
     <MudForm>
         <MudTextField Class="mt-4" T="string" Placeholder="Artist Name"
                       @bind-Value="Name"
@@ -19,11 +16,11 @@
                       Required="true"
                       RequiredError="Field is required."
         />
-        
+
         <MudTextField Class="mt-4" T="string" Placeholder="Artist Bio"
                       @bind-Value="Bio"
                       Variant="Variant.Outlined"
-                      Required="true"   
+                      Required="true"
                       RequiredError="Field is required."
         />
 
@@ -39,39 +36,67 @@
                 </MudButton>
             </ButtonTemplate>
         </MudFileUpload>
-
+        
         <div class="d-flex justify-end mt-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mr-2" OnClick="RegisterArtist">
-                Register
+            <MudButton Variant="Variant.Filled" Color="Color.Success" Class="mr-2" OnClick="@UpdateArtist">
+                Save
             </MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/artists">
+            <MudButton Variant="Variant.Filled" Color="Color.Default" Class="mr-2" Href="/artists">
                 Back
             </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Warning" Class="mr-2" OnClick="DeleteArtist">
+                Delete
+            </MudButton>
         </div>
-        
     </MudForm>
 </MudPaper>
 
 @code
 {
-    private string? Name { get; set; }
-    private string? Bio { get; set; }
-    private string? FileImage { get; set; }
-    private string? ProfilePicture { get; set; }
+    public string? Name { get; set; }
+    public string? Bio { get; set; }
+    public string? FileImage { get; set; }
+    public string ProfilePicture { get; set; }
     
-    
-    private async Task RegisterArtist()
+    private ArtistResponse? Artist { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await ArtistClient.GetArtistAsync(Id);
+        Artist = response;
+        Name = response!.Name;
+        Bio = response.Bio;
+    }
+
+    private async Task UpdateArtist()
     {
         try
         {
-            var request = new ArtistRequest(Name, Bio, ProfilePicture);
-            await ArtistClient.RegisterArtistAsync(request);
+            var request = new ArtistRequestEdit(Id, Name, Bio, ProfilePicture);
+            await ArtistClient.UpdateArtistAsync(request);
+            Snackbar.Add("Artista atualizado com sucesso!", Severity.Success);
             NavigationManager.NavigateTo("/artists");
         }
         catch (Exception e)
         {
-            Snackbar.Add("Erro", Severity.Error);
-            return;
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private async Task DeleteArtist()
+    {
+        try
+        {
+            await ArtistClient.DeleteArtistAsync(Id);
+            NavigationManager.NavigateTo("/artists");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
     

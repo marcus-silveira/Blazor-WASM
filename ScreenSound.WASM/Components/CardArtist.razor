@@ -1,16 +1,43 @@
 ﻿<MudCard>
-    <MudCardMedia Image="images/cardArtista.png"></MudCardMedia>
+    <MudImage Src="@ImageUrl" Alt="Artist Image" Style="width: 100%; height: auto; object-fit: cover;" />
     <MudCardHeader>
         <CardHeaderContent>
-            <MudText Typo="Typo.h6">@Artist!.Name</MudText>
+                <MudText Typo="Typo.h6">@Artist!.Name</MudText>
         </CardHeaderContent>
     </MudCardHeader>
     <MudCardContent>
         <MudText Typo="Typo.body2">@Artist!.Bio</MudText>
     </MudCardContent>
+    
+    @if (IsArtistsPage)
+    {
+        <MudCardActions>
+            <MudButton
+                Color="Color.Warning"
+                Variant="Variant.Outlined"
+                Href=@($"artist/details/{Artist!.Id}")>
+                Details
+            </MudButton>
+        </MudCardActions>
+    }
 </MudCard>
 
 @code {
     [Parameter]
     public ArtistResponse? Artist { get; set; }
+    private string? ImageUrl {get; set;}
+    private bool IsArtistsPage;
+    
+    [Inject]
+    private NavigationManager Navigation { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        var profilePhoto = Artist!.ProfilePhoto;
+        ImageUrl = profilePhoto != null && profilePhoto.Contains("FotosPerfil")
+            ? $"https://localhost:7089/{Artist!.ProfilePhoto}"
+            : "images/cardArtista.png";
+        
+        IsArtistsPage = Navigation.Uri.EndsWith("/artists");
+    }
 }

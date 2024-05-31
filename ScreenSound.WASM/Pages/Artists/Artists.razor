@@ -1,13 +1,15 @@
 ﻿@page "/artists"
-@using ScreenSound.WASM.Components
 @inject ArtistClient Client
 
-<h1>Artists</h1>
+<MudStack Class="mt-4 mb-4" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Class="mb-4" Typo="Typo.h4">Artists</MudText>
+    <MudPagination Count="@TotalPages" SelectedChanged="NextPage"></MudPagination>
+</MudStack>
 
 @if (_artists is not null)
 {
     <MudGrid>
-        @foreach (var artist in _artists)
+        @foreach (var artist in _artistsPage)
         {
             <MudItem xs="3">
                 <CardArtist Artist="artist"></CardArtist>
@@ -19,9 +21,27 @@
 @code
 {
     private IEnumerable<ArtistResponse>? _artists;
+    private IEnumerable<ArtistResponse> _artistsPage;
+    
+    private int TotalArtists {get; set;}
+    private int TotalPages {get; set;}
+    private int SizePage { get; set; }= 4;
 
     protected override async Task OnInitializedAsync()
     {
         _artists = await Client.GetArtistsAsync();
+        if (_artists is not null)
+        {
+            _artists = _artists.OrderByDescending(a => a.Id).ToList();
+            TotalArtists = _artists.Count();
+            TotalPages = Convert.ToInt32(Math.Ceiling((TotalArtists * 1.0) / SizePage));
+            NextPage(1);
+        }
+    }
+    
+    private void NextPage(int page)
+    {
+        var index = page - 1;
+        _artistsPage = _artists!.Skip(index * SizePage).Take(SizePage).ToList();
     }
 }

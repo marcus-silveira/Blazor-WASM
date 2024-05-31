@@ -19,7 +19,7 @@ public class ArtistClient
 		return result;
 	}
 
-	public async Task AddArtistAsync(ArtistRequest artist)
+	public async Task RegisterArtistAsync(ArtistRequest artist)
 	{
 		await _httpClient.PostAsJsonAsync("artistas", artist);
 	}
@@ -27,6 +27,10 @@ public class ArtistClient
 	public async Task<ArtistResponse?> GetArtistByName(string name)
 	{
 		return await _httpClient.GetFromJsonAsync<ArtistResponse>($"artistas/{name}");
+	}
+	public async Task<ArtistResponse?> GetArtistAsync(int id)
+	{
+		return await _httpClient.GetFromJsonAsync<ArtistResponse>($"artista/{id}");
 	}
 	public async Task DeleteArtistAsync(int id)
 	{

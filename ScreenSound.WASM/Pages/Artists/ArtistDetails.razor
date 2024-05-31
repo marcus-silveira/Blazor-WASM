@@ -1,0 +1,40 @@
+﻿@page "/artist/details/{Id:int}"
+@inject ArtistClient ArtistClient
+@inject NavigationManager NavigationManager
+
+@if (Artist is not null)
+{
+<MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="height: 100vh;">
+    <MudItem xs="12" sm="10" md="8" lg="4">
+        <MudPaper Class="pa-4" Style="min-height: 400px;">
+            <CardArtist Artist="Artist"></CardArtist>
+            <div class="d-flex justify-end mt-4">
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" Class="mr-2" OnClick="UpdateArtist">
+                    Edit
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Default" Href="/artists">
+                    Back
+                </MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid> }
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private ArtistResponse? Artist { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Artist = await ArtistClient.GetArtistAsync(Id);
+    }
+    
+    public void UpdateArtist()
+    {
+        NavigationManager.NavigateTo($"/artists/edit/{Id}");
+    }
+    
+}
